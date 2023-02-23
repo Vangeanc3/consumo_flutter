@@ -8,26 +8,38 @@ import '../models/journal.dart';
 
 class JournalService {
   // Consiga seu IP usando o comando "ipconfig" no Windows ou "ifconfig" no Linux.
-  static const String url = "http://SEU_IP_AQUI:3000/";
+  static const String url = "https://localhost:7056/";
   static const String resource = "journals/";
 
   http.Client client = InterceptedClient.build(
     interceptors: [LoggingInterceptor()],
   );
 
-  String getURL() {
+  String URL() {
     return "$url$resource";
   }
 
   Uri getUri() {
-    return Uri.parse(getURL());
+    return Uri.parse("${URL()}buscar/");
+  }
+
+  Uri postUri() {
+    return Uri.parse("${URL()}criar/");
+  }
+
+  Uri updateUri() {
+    return Uri.parse("${URL()}atualizar/");
+  }
+
+  Uri deleteUri() {
+    return Uri.parse("${URL()}deletar/");
   }
 
   Future<bool> register(Journal journal) async {
     String journalJSON = json.encode(journal.toMap());
 
     http.Response response = await client.post(
-      getUri(),
+      postUri(),
       headers: {'Content-type': 'application/json'},
       body: journalJSON,
     );
